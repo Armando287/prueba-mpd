@@ -1,0 +1,19 @@
+name: Check Domain Access
+
+on:
+  push:
+    branches:https://github.com/Armando287/prueba-mpd/tree/main
+      - main
+
+jobs:
+  check_domain_access:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Referrer Header
+        uses: actions/github-script@v4
+        with:
+          script: |
+            const referrer = github.event.request.headers.referrer;
+            if (!referrer.includes('gooplay.xyz')) {
+              core.setFailed('Access denied: Domain not allowed');
+            }
